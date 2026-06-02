@@ -3,1049 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>quem leu é gay</title>
+<title>Álbum Neymar Jr</title>
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-}
-
-html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#000;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
-    background:
-    radial-gradient(circle at 20% 20%, rgba(120,0,20,.45), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255,0,80,.18), transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(80,0,40,.55), transparent 50%),
-    linear-gradient(135deg,#020202,#180006,#26000d,#060606);
-}
-
-canvas{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-}
-
-.title{
-    position:fixed;
-    top:20px;
-    width:100%;
-    text-align:center;
-    color:white;
-    letter-spacing:5px;
-    font-size:clamp(14px,2vw,22px);
-    text-transform:uppercase;
-    text-shadow:
-    0 0 10px #ff0055,
-    0 0 25px #ff0055,
-    0 0 50px #ff0055;
-    z-index:10;
-    opacity:.9;
-}
-</style>
-</head>
-<body>
-
-<div class="title">
-❤
-</div>
-
-<canvas id="scene"></canvas>
-
-<script>
-const canvas = document.getElementById("scene");
-const ctx = canvas.getContext("2d");
-
-let w,h,cx,cy;
-
-function resize(){
-    w = canvas.width = innerWidth * devicePixelRatio;
-    h = canvas.height = innerHeight * devicePixelRatio;
-
-    canvas.style.width = innerWidth+"px";
-    canvas.style.height = innerHeight+"px";
-
-    cx = w/2;
-    cy = h/2;
-}
-resize();
-addEventListener("resize",resize);
-
-function drawHeart(x,y,size,color,alpha){
-
-    ctx.save();
-
-    ctx.translate(x,y);
-    ctx.scale(size,size);
-
-    ctx.beginPath();
-
-    ctx.moveTo(0,-3);
-
-    ctx.bezierCurveTo(4,-10,16,-8,16,4);
-    ctx.bezierCurveTo(16,14,8,20,0,28);
-    ctx.bezierCurveTo(-8,20,-16,14,-16,4);
-    ctx.bezierCurveTo(-16,-8,-4,-10,0,-3);
-
-    ctx.closePath();
-
-    ctx.fillStyle=color;
-    ctx.globalAlpha=alpha;
-    ctx.fill();
-
-    ctx.restore();
-}
-
-function heartShape(t){
-    return {
-        x:16*Math.pow(Math.sin(t),3),
-        y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
-    };
-}
-
-/* ========= ESTRELAS ========= */
-
-const stars=[];
-
-for(let i=0;i<900;i++){
-    stars.push({
-        x:Math.random(),
-        y:Math.random(),
-        s:Math.random()*2+0.2,
-        a:Math.random(),
-        speed:Math.random()*0.015
-    });
-}
-
-/* ========= PARTÍCULAS ========= */
-
-const dust=[];
-
-for(let i=0;i<1200;i++){
-    dust.push({
-        x:(Math.random()-0.5)*2200,
-        y:(Math.random()-0.5)*2200,
-        z:Math.random()*1800+200,
-        size:Math.random()*4+1,
-        glow:Math.random()
-    });
-}
-
-/* ========= CORAÇÃO GIGANTE ========= */
-
-const heartParticles=[];
-
-const PARTICLES=5000;
-
-for(let i=0;i<PARTICLES;i++){
-
-    const t=Math.random()*Math.PI*2;
-
-    const p=heartShape(t);
-
-    const spread=(Math.random()-0.5)*3;
-
-    heartParticles.push({
-        hx:p.x*24 + spread,
-        hy:p.y*24 + spread,
-        hz:(Math.random()-0.5)*240,
-        size:Math.random()*1.8+0.5,
-        speed:Math.random()*0.006+0.001
-    });
-}
-
-/* ========= ÓRBITAS ========= */
-
-const orbitHearts=[];
-
-for(let i=0;i<3500;i++){
-
-    const angle=Math.random()*Math.PI*2;
-
-    const radius=250+Math.random()*700;
-
-    orbitHearts.push({
-        angle,
-        radius,
-        speed:(Math.random()*0.0015+0.00015)*(Math.random()>0.5?1:-1),
-        size:Math.random()*2.5+0.5,
-        depth:Math.random()*1200+100,
-        phase:Math.random()*10
-    });
-}
-
-let time=0;
-
-function animate(){
-
-    requestAnimationFrame(animate);
-
-    time+=0.01;
-
-    ctx.clearRect(0,0,w,h);
-
-    /* Fundo */
-
-    const bg=ctx.createRadialGradient(
-        cx,cy,50,
-        cx,cy,w
+    background: linear-gradient(
+        135deg,
+        #009739 0%,
+        #009739 35%,
+        #FFDF00 65%,
+        #002776 100%
     );
-
-    bg.addColorStop(0,"rgba(90,0,25,0.12)");
-    bg.addColorStop(1,"rgba(0,0,0,1)");
-
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,w,h);
-
-    /* Estrelas */
-
-    for(const s of stars){
-
-        const alpha=0.3+Math.sin(time*2+s.a*10)*0.7;
-
-        ctx.beginPath();
-        ctx.arc(
-            s.x*w,
-            s.y*h,
-            s.s,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fillStyle=`rgba(255,120,160,${alpha})`;
-        ctx.fill();
-    }
-
-    /* Poeira estelar */
-
-    for(const d of dust){
-
-        const perspective=800/(d.z);
-
-        const x=cx+d.x*perspective;
-        const y=cy+d.y*perspective;
-
-        const size=d.size*perspective*2;
-
-        ctx.beginPath();
-        ctx.arc(x,y,size,0,Math.PI*2);
-
-        ctx.fillStyle=`rgba(255,80,120,${0.12+d.glow*0.2})`;
-        ctx.fill();
-    }
-
-    /* Pulso */
-
-    const pulse=1+Math.sin(time*3)*0.12;
-
-    /* Coração central */
-
-    for(const p of heartParticles){
-
-        const rot=time*0.3;
-
-        const cos=Math.cos(rot);
-        const sin=Math.sin(rot);
-
-        let x=p.hx*pulse;
-        let z=p.hz;
-
-        const rx=x*cos-z*sin;
-        const rz=x*sin+z*cos;
-
-        const perspective=1000/(1200+rz);
-
-        const px=cx+rx*perspective*12;
-        const py=cy+p.hy*pulse*perspective*12;
-
-        const size=p.size*perspective*5;
-
-        const glow=10*perspective;
-
-        ctx.shadowBlur=glow;
-        ctx.shadowColor="#ff2a6d";
-
-        drawHeart(
-            px,
-            py,
-            size,
-            "#ff2a6d",
-            0.95
-        );
-    }
-
-    /* Órbitas */
-
-    for(const o of orbitHearts){
-
-        o.angle+=o.speed;
-
-        const heartOrbit=heartShape(o.angle);
-
-        const ox=heartOrbit.x*o.radius*0.16;
-        const oy=heartOrbit.y*o.radius*0.16;
-
-        const depth=Math.sin(o.angle+o.phase)*o.depth;
-
-        const perspective=1200/(1200+depth);
-
-        const x=cx+ox*perspective;
-        const y=cy+oy*perspective;
-
-        const alpha=Math.max(
-            0.15,
-            perspective
-        );
-
-        const size=o.size*perspective*2.2;
-
-        ctx.shadowBlur=25*perspective;
-        ctx.shadowColor="#ff0055";
-
-        drawHeart(
-            x,
-            y,
-            size,
-            "#ff4d88",
-            alpha
-        );
-
-        /* rastro */
-
-        ctx.beginPath();
-        ctx.arc(x,y,size*0.8,0,Math.PI*2);
-
-        ctx.fillStyle=`rgba(255,0,90,${alpha*0.2})`;
-        ctx.fill();
-    }
-
-    /* brilho central */
-
-    const glow=ctx.createRadialGradient(
-        cx,cy,0,
-        cx,cy,350
-    );
-
-    glow.addColorStop(0,"rgba(255,70,120,0.25)");
-    glow.addColorStop(0.5,"rgba(255,0,90,0.08)");
-    glow.addColorStop(1,"rgba(255,0,90,0)");
-
-    ctx.fillStyle=glow;
-    ctx.fillRect(0,0,w,h);
-
+    min-height:100vh;
+    padding:40px;
 }
 
-animate();
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coração Cósmico Vivo</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+.album{
+    max-width:1300px;
+    margin:auto;
 }
 
-html,body{
+.banner{
     width:100%;
-    height:100%;
+    height:400px;
+    border-radius:25px;
     overflow:hidden;
-    background:#000;
-    font-family:Arial,Helvetica,sans-serif;
+    position:relative;
+    margin-bottom:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
-body{
-    background:
-    radial-gradient(circle at 20% 20%, rgba(120,0,20,.45), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255,0,80,.18), transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(80,0,40,.55), transparent 50%),
-    linear-gradient(135deg,#020202,#180006,#26000d,#060606);
-}
-
-canvas{
-    position:fixed;
-    inset:0;
+.banner img{
     width:100%;
     height:100%;
+    object-fit:cover;
 }
 
-.title{
-    position:fixed;
-    top:20px;
-    width:100%;
+.banner-texto{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.banner-texto h1{
+    color:white;
+    font-size:4rem;
+    text-shadow:3px 3px 15px black;
+}
+
+.banner-texto p{
+    color:white;
+    font-size:1.3rem;
+}
+
+.titulo{
     text-align:center;
     color:white;
-    letter-spacing:5px;
-    font-size:clamp(14px,2vw,22px);
-    text-transform:uppercase;
-    text-shadow:
-    0 0 10px #ff0055,
-    0 0 25px #ff0055,
-    0 0 50px #ff0055;
-    z-index:10;
-    opacity:.9;
-}
-</style>
-</head>
-<body>
-
-<div class="title">
-❤ Coração Vivo de Milhares de Corações ❤
-</div>
-
-<canvas id="scene"></canvas>
-
-<script>
-const canvas = document.getElementById("scene");
-const ctx = canvas.getContext("2d");
-
-let w,h,cx,cy;
-
-function resize(){
-    w = canvas.width = innerWidth * devicePixelRatio;
-    h = canvas.height = innerHeight * devicePixelRatio;
-
-    canvas.style.width = innerWidth+"px";
-    canvas.style.height = innerHeight+"px";
-
-    cx = w/2;
-    cy = h/2;
-}
-resize();
-addEventListener("resize",resize);
-
-function drawHeart(x,y,size,color,alpha){
-
-    ctx.save();
-
-    ctx.translate(x,y);
-    ctx.scale(size,size);
-
-    ctx.beginPath();
-
-    ctx.moveTo(0,-3);
-
-    ctx.bezierCurveTo(4,-10,16,-8,16,4);
-    ctx.bezierCurveTo(16,14,8,20,0,28);
-    ctx.bezierCurveTo(-8,20,-16,14,-16,4);
-    ctx.bezierCurveTo(-16,-8,-4,-10,0,-3);
-
-    ctx.closePath();
-
-    ctx.fillStyle=color;
-    ctx.globalAlpha=alpha;
-    ctx.fill();
-
-    ctx.restore();
+    font-size:3rem;
+    margin-bottom:15px;
+    text-shadow:2px 2px 10px rgba(0,0,0,.4);
 }
 
-function heartShape(t){
-    return {
-        x:16*Math.pow(Math.sin(t),3),
-        y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
-    };
+.subtitulo{
+    text-align:center;
+    color:white;
+    margin-bottom:50px;
+    font-size:1.2rem;
 }
 
-/* ========= ESTRELAS ========= */
-
-const stars=[];
-
-for(let i=0;i<900;i++){
-    stars.push({
-        x:Math.random(),
-        y:Math.random(),
-        s:Math.random()*2+0.2,
-        a:Math.random(),
-        speed:Math.random()*0.015
-    });
+.galeria{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
 }
 
-/* ========= PARTÍCULAS ========= */
-
-const dust=[];
-
-for(let i=0;i<1200;i++){
-    dust.push({
-        x:(Math.random()-0.5)*2200,
-        y:(Math.random()-0.5)*2200,
-        z:Math.random()*1800+200,
-        size:Math.random()*4+1,
-        glow:Math.random()
-    });
-}
-
-/* ========= CORAÇÃO GIGANTE ========= */
-
-const heartParticles=[];
-
-const PARTICLES=5000;
-
-for(let i=0;i<PARTICLES;i++){
-
-    const t=Math.random()*Math.PI*2;
-
-    const p=heartShape(t);
-
-    const spread=(Math.random()-0.5)*3;
-
-    heartParticles.push({
-        hx:p.x*24 + spread,
-        hy:p.y*24 + spread,
-        hz:(Math.random()-0.5)*240,
-        size:Math.random()*1.8+0.5,
-        speed:Math.random()*0.006+0.001
-    });
-}
-
-/* ========= ÓRBITAS ========= */
-
-const orbitHearts=[];
-
-for(let i=0;i<3500;i++){
-
-    const angle=Math.random()*Math.PI*2;
-
-    const radius=250+Math.random()*700;
-
-    orbitHearts.push({
-        angle,
-        radius,
-        speed:(Math.random()*0.0015+0.00015)*(Math.random()>0.5?1:-1),
-        size:Math.random()*2.5+0.5,
-        depth:Math.random()*1200+100,
-        phase:Math.random()*10
-    });
-}
-
-let time=0;
-
-function animate(){
-
-    requestAnimationFrame(animate);
-
-    time+=0.01;
-
-    ctx.clearRect(0,0,w,h);
-
-    /* Fundo */
-
-    const bg=ctx.createRadialGradient(
-        cx,cy,50,
-        cx,cy,w
-    );
-
-    bg.addColorStop(0,"rgba(90,0,25,0.12)");
-    bg.addColorStop(1,"rgba(0,0,0,1)");
-
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,w,h);
-
-    /* Estrelas */
-
-    for(const s of stars){
-
-        const alpha=0.3+Math.sin(time*2+s.a*10)*0.7;
-
-        ctx.beginPath();
-        ctx.arc(
-            s.x*w,
-            s.y*h,
-            s.s,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fillStyle=`rgba(255,120,160,${alpha})`;
-        ctx.fill();
-    }
-
-    /* Poeira estelar */
-
-    for(const d of dust){
-
-        const perspective=800/(d.z);
-
-        const x=cx+d.x*perspective;
-        const y=cy+d.y*perspective;
-
-        const size=d.size*perspective*2;
-
-        ctx.beginPath();
-        ctx.arc(x,y,size,0,Math.PI*2);
-
-        ctx.fillStyle=`rgba(255,80,120,${0.12+d.glow*0.2})`;
-        ctx.fill();
-    }
-
-    /* Pulso */
-
-    const pulse=1+Math.sin(time*3)*0.12;
-
-    /* Coração central */
-
-    for(const p of heartParticles){
-
-        const rot=time*0.3;
-
-        const cos=Math.cos(rot);
-        const sin=Math.sin(rot);
-
-        let x=p.hx*pulse;
-        let z=p.hz;
-
-        const rx=x*cos-z*sin;
-        const rz=x*sin+z*cos;
-
-        const perspective=1000/(1200+rz);
-
-        const px=cx+rx*perspective*12;
-        const py=cy+p.hy*pulse*perspective*12;
-
-        const size=p.size*perspective*5;
-
-        const glow=10*perspective;
-
-        ctx.shadowBlur=glow;
-        ctx.shadowColor="#ff2a6d";
-
-        drawHeart(
-            px,
-            py,
-            size,
-            "#ff2a6d",
-            0.95
-        );
-    }
-
-    /* Órbitas */
-
-    for(const o of orbitHearts){
-
-        o.angle+=o.speed;
-
-        const heartOrbit=heartShape(o.angle);
-
-        const ox=heartOrbit.x*o.radius*0.16;
-        const oy=heartOrbit.y*o.radius*0.16;
-
-        const depth=Math.sin(o.angle+o.phase)*o.depth;
-
-        const perspective=1200/(1200+depth);
-
-        const x=cx+ox*perspective;
-        const y=cy+oy*perspective;
-
-        const alpha=Math.max(
-            0.15,
-            perspective
-        );
-
-        const size=o.size*perspective*2.2;
-
-        ctx.shadowBlur=25*perspective;
-        ctx.shadowColor="#ff0055";
-
-        drawHeart(
-            x,
-            y,
-            size,
-            "#ff4d88",
-            alpha
-        );
-
-        /* rastro */
-
-        ctx.beginPath();
-        ctx.arc(x,y,size*0.8,0,Math.PI*2);
-
-        ctx.fillStyle=`rgba(255,0,90,${alpha*0.2})`;
-        ctx.fill();
-    }
-
-    /* brilho central */
-
-    const glow=ctx.createRadialGradient(
-        cx,cy,0,
-        cx,cy,350
-    );
-
-    glow.addColorStop(0,"rgba(255,70,120,0.25)");
-    glow.addColorStop(0.5,"rgba(255,0,90,0.08)");
-    glow.addColorStop(1,"rgba(255,0,90,0)");
-
-    ctx.fillStyle=glow;
-    ctx.fillRect(0,0,w,h);
-
-}
-
-animate();
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coração Cósmico Vivo</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html,body{
-    width:100%;
-    height:100%;
+.card{
+    background:white;
+    border-radius:20px;
     overflow:hidden;
-    background:#000;
-    font-family:Arial,Helvetica,sans-serif;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+    transition:0.4s;
+    border:4px solid #FFDF00;
 }
 
-body{
-    background:
-    radial-gradient(circle at 20% 20%, rgba(120,0,20,.45), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255,0,80,.18), transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(80,0,40,.55), transparent 50%),
-    linear-gradient(135deg,#020202,#180006,#26000d,#060606);
+.card:hover{
+    transform:translateY(-10px) scale(1.03);
 }
 
-canvas{
-    position:fixed;
-    inset:0;
+.card img{
     width:100%;
-    height:100%;
+    height:350px;
+    object-fit:cover;
 }
 
-.title{
-    position:fixed;
-    top:20px;
-    width:100%;
+.info{
+    padding:20px;
+}
+
+.info h2{
+    color:#002776;
+    margin-bottom:10px;
+}
+
+.info p{
+    color:#555;
+    line-height:1.5;
+}
+
+.rodape{
+    margin-top:50px;
     text-align:center;
     color:white;
-    letter-spacing:5px;
-    font-size:clamp(14px,2vw,22px);
-    text-transform:uppercase;
-    text-shadow:
-    0 0 10px #ff0055,
-    0 0 25px #ff0055,
-    0 0 50px #ff0055;
-    z-index:10;
-    opacity:.9;
+    font-size:1.1rem;
+}
+
+@media(max-width:768px){
+
+    body{
+        padding:20px;
+    }
+
+    .banner{
+        height:250px;
+    }
+
+    .banner-texto h1{
+        font-size:2.5rem;
+    }
+
+    .titulo{
+        font-size:2rem;
+    }
 }
 </style>
+
 </head>
 <body>
 
-<div class="title">
-❤ Coração Vivo de Milhares de Corações ❤
+<div class="album">
+
+    <div class="banner">
+        <img src="ney1.jpg" alt="Neymar">
+        <div class="banner-texto">
+            <h1>NEYMAR JR</h1>
+            <p>Uma trajetória de talento, paixão e conquistas</p>
+        </div>
+    </div>
+
+    <h1 class="titulo">Álbum de Memórias</h1>
+
+    <p class="subtitulo">
+        Os momentos mais marcantes da carreira de Neymar Jr.
+    </p>
+
+    <div class="galeria">
+
+        <div class="card">
+            <img src="ney2.jpg" alt="">
+            <div class="info">
+                <h2>Início no Santos</h2>
+                <p>O começo da trajetória de um dos maiores talentos do futebol brasileiro.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ney3.jpg" alt="">
+            <div class="info">
+                <h2>Seleção Brasileira</h2>
+                <p>Representando o Brasil em Copas do Mundo e competições internacionais.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ney4.jpg" alt="">
+            <div class="info">
+                <h2>Grandes Conquistas</h2>
+                <p>Títulos, gols históricos e momentos inesquecíveis para os torcedores.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ney5.jpg" alt="">
+            <div class="info">
+                <h2>Momentos Marcantes</h2>
+                <p>Jogadas, dribles e comemorações que marcaram época.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ney7.jpg" alt="">
+            <div class="info">
+                <h2>Ídolo Mundial</h2>
+                <p>Reconhecido por fãs de futebol em todos os continentes.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ney6.jpg" alt="">
+            <div class="info">
+                <h2>Legado</h2>
+                <p>Uma carreira repleta de talento, dedicação e inspiração.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ney8.jpg" alt="">
+            <div class="info">
+                <h2>Legado</h2>
+                <p>Uma carreira repleta de talento, dedicação e inspiração.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ney9.jpg" alt="">
+            <div class="info">
+                <h2>Legado</h2>
+                <p>Uma carreira repleta de talento, dedicação e inspiração.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="rodape">
+        ⚽ Neymar Jr • Álbum Especial • 🇧🇷 Brasil
+    </div>
+
 </div>
-
-<canvas id="scene"></canvas>
-
-<script>
-const canvas = document.getElementById("scene");
-const ctx = canvas.getContext("2d");
-
-let w,h,cx,cy;
-
-function resize(){
-    w = canvas.width = innerWidth * devicePixelRatio;
-    h = canvas.height = innerHeight * devicePixelRatio;
-
-    canvas.style.width = innerWidth+"px";
-    canvas.style.height = innerHeight+"px";
-
-    cx = w/2;
-    cy = h/2;
-}
-resize();
-addEventListener("resize",resize);
-
-function drawHeart(x,y,size,color,alpha){
-
-    ctx.save();
-
-    ctx.translate(x,y);
-    ctx.scale(size,size);
-
-    ctx.beginPath();
-
-    ctx.moveTo(0,-3);
-
-    ctx.bezierCurveTo(4,-10,16,-8,16,4);
-    ctx.bezierCurveTo(16,14,8,20,0,28);
-    ctx.bezierCurveTo(-8,20,-16,14,-16,4);
-    ctx.bezierCurveTo(-16,-8,-4,-10,0,-3);
-
-    ctx.closePath();
-
-    ctx.fillStyle=color;
-    ctx.globalAlpha=alpha;
-    ctx.fill();
-
-    ctx.restore();
-}
-
-function heartShape(t){
-    return {
-        x:16*Math.pow(Math.sin(t),3),
-        y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
-    };
-}
-
-/* ========= ESTRELAS ========= */
-
-const stars=[];
-
-for(let i=0;i<900;i++){
-    stars.push({
-        x:Math.random(),
-        y:Math.random(),
-        s:Math.random()*2+0.2,
-        a:Math.random(),
-        speed:Math.random()*0.015
-    });
-}
-
-/* ========= PARTÍCULAS ========= */
-
-const dust=[];
-
-for(let i=0;i<1200;i++){
-    dust.push({
-        x:(Math.random()-0.5)*2200,
-        y:(Math.random()-0.5)*2200,
-        z:Math.random()*1800+200,
-        size:Math.random()*4+1,
-        glow:Math.random()
-    });
-}
-
-/* ========= CORAÇÃO GIGANTE ========= */
-
-const heartParticles=[];
-
-const PARTICLES=5000;
-
-for(let i=0;i<PARTICLES;i++){
-
-    const t=Math.random()*Math.PI*2;
-
-    const p=heartShape(t);
-
-    const spread=(Math.random()-0.5)*3;
-
-    heartParticles.push({
-        hx:p.x*24 + spread,
-        hy:p.y*24 + spread,
-        hz:(Math.random()-0.5)*240,
-        size:Math.random()*1.8+0.5,
-        speed:Math.random()*0.006+0.001
-    });
-}
-
-/* ========= ÓRBITAS ========= */
-
-const orbitHearts=[];
-
-for(let i=0;i<3500;i++){
-
-    const angle=Math.random()*Math.PI*2;
-
-    const radius=250+Math.random()*700;
-
-    orbitHearts.push({
-        angle,
-        radius,
-        speed:(Math.random()*0.0015+0.00015)*(Math.random()>0.5?1:-1),
-        size:Math.random()*2.5+0.5,
-        depth:Math.random()*1200+100,
-        phase:Math.random()*10
-    });
-}
-
-let time=0;
-
-function animate(){
-
-    requestAnimationFrame(animate);
-
-    time+=0.01;
-
-    ctx.clearRect(0,0,w,h);
-
-    /* Fundo */
-
-    const bg=ctx.createRadialGradient(
-        cx,cy,50,
-        cx,cy,w
-    );
-
-    bg.addColorStop(0,"rgba(90,0,25,0.12)");
-    bg.addColorStop(1,"rgba(0,0,0,1)");
-
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,w,h);
-
-    /* Estrelas */
-
-    for(const s of stars){
-
-        const alpha=0.3+Math.sin(time*2+s.a*10)*0.7;
-
-        ctx.beginPath();
-        ctx.arc(
-            s.x*w,
-            s.y*h,
-            s.s,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fillStyle=`rgba(255,120,160,${alpha})`;
-        ctx.fill();
-    }
-
-    /* Poeira estelar */
-
-    for(const d of dust){
-
-        const perspective=800/(d.z);
-
-        const x=cx+d.x*perspective;
-        const y=cy+d.y*perspective;
-
-        const size=d.size*perspective*2;
-
-        ctx.beginPath();
-        ctx.arc(x,y,size,0,Math.PI*2);
-
-        ctx.fillStyle=`rgba(255,80,120,${0.12+d.glow*0.2})`;
-        ctx.fill();
-    }
-
-    /* Pulso */
-
-    const pulse=1+Math.sin(time*3)*0.12;
-
-    /* Coração central */
-
-    for(const p of heartParticles){
-
-        const rot=time*0.3;
-
-        const cos=Math.cos(rot);
-        const sin=Math.sin(rot);
-
-        let x=p.hx*pulse;
-        let z=p.hz;
-
-        const rx=x*cos-z*sin;
-        const rz=x*sin+z*cos;
-
-        const perspective=1000/(1200+rz);
-
-        const px=cx+rx*perspective*12;
-        const py=cy+p.hy*pulse*perspective*12;
-
-        const size=p.size*perspective*5;
-
-        const glow=10*perspective;
-
-        ctx.shadowBlur=glow;
-        ctx.shadowColor="#ff2a6d";
-
-        drawHeart(
-            px,
-            py,
-            size,
-            "#ff2a6d",
-            0.95
-        );
-    }
-
-    /* Órbitas */
-
-    for(const o of orbitHearts){
-
-        o.angle+=o.speed;
-
-        const heartOrbit=heartShape(o.angle);
-
-        const ox=heartOrbit.x*o.radius*0.16;
-        const oy=heartOrbit.y*o.radius*0.16;
-
-        const depth=Math.sin(o.angle+o.phase)*o.depth;
-
-        const perspective=1200/(1200+depth);
-
-        const x=cx+ox*perspective;
-        const y=cy+oy*perspective;
-
-        const alpha=Math.max(
-            0.15,
-            perspective
-        );
-
-        const size=o.size*perspective*2.2;
-
-        ctx.shadowBlur=25*perspective;
-        ctx.shadowColor="#ff0055";
-
-        drawHeart(
-            x,
-            y,
-            size,
-            "#ff4d88",
-            alpha
-        );
-
-        /* rastro */
-
-        ctx.beginPath();
-        ctx.arc(x,y,size*0.8,0,Math.PI*2);
-
-        ctx.fillStyle=`rgba(255,0,90,${alpha*0.2})`;
-        ctx.fill();
-    }
-
-    /* brilho central */
-
-    const glow=ctx.createRadialGradient(
-        cx,cy,0,
-        cx,cy,350
-    );
-
-    glow.addColorStop(0,"rgba(255,70,120,0.25)");
-    glow.addColorStop(0.5,"rgba(255,0,90,0.08)");
-    glow.addColorStop(1,"rgba(255,0,90,0)");
-
-    ctx.fillStyle=glow;
-    ctx.fillRect(0,0,w,h);
-
-}
-
-animate();
-</script>
 
 </body>
 </html>
